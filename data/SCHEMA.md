@@ -110,8 +110,12 @@ frecuencia y no son "lugares visitables". Ver `data/trip.example.json`.
   a una fecha ISO (`YYYY-MM-DD`). Con esto, `core/now.js` puede detectar
   automáticamente qué día del itinerario corresponde a "hoy" y abrir esa
   pestaña al cargar la app.
-- `vuelos`: lista de trayectos con horarios — **no incluyas aquí nombres
-  completos de pasajeros ni fechas de nacimiento**; la app es pública en
+- `vuelos`: lista de trayectos con horarios. `numero_vuelo` (p.ej. `V73508`,
+  aerolínea + número) alimenta un enlace automático a Flightradar24 para ver
+  el estado en vivo — no hace falta ninguna API key, es solo un link.
+  **No incluyas aquí nombres completos de pasajeros, fechas de nacimiento, ni
+  localizadores de reserva** (con localizador + apellido suele bastar para
+  acceder a la reserva en la web de la aerolínea); la app es pública en
   GitHub Pages. Si necesitas esos datos a mano, guárdalos fuera de este repo.
 - `alojamiento`: un único objeto con los datos del hotel/apartamento.
 - `contactos_emergencia`: lista de `{ nombre, telefono, direccion?, nota? }`
