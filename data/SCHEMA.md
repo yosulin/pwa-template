@@ -60,3 +60,23 @@ para que el lugar aparezca en el mapa y sea clicable).
 - El emparejamiento de `plan` con `lugares` es por coincidencia de texto
   (ver `matchLugarFromPlanLine` en `app.js`) — no es infalible, revísalo tras
   generar el itinerario.
+
+# Esquema de datos — `data/trip.json` (opcional)
+
+Metadatos del viaje, separados de `lugares.json` porque cambian con menos
+frecuencia y no son "lugares visitables". Ver `data/trip.example.json`.
+
+- `fechas`: mapea cada clave de día usada en `itinerario_familiar_recomendado`
+  a una fecha ISO (`YYYY-MM-DD`). Con esto, `core/now.js` puede detectar
+  automáticamente qué día del itinerario corresponde a "hoy" y abrir esa
+  pestaña al cargar la app.
+- `vuelos`: lista de trayectos con horarios — **no incluyas aquí nombres
+  completos de pasajeros ni fechas de nacimiento**; la app es pública en
+  GitHub Pages. Si necesitas esos datos a mano, guárdalos fuera de este repo.
+- `alojamiento`: un único objeto con los datos del hotel/apartamento.
+- `contactos_emergencia`: lista de `{ nombre, telefono, direccion?, nota? }`
+  (número europeo de emergencias, embajada/consulado, seguro de viaje...).
+
+Si `data/trip.json` no existe, la vista "Info" y el modo "ahora" simplemente
+no se activan — el resto de la app funciona igual.
+
