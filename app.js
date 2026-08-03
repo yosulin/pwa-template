@@ -37,7 +37,13 @@ let activeCatFilter = 'todas';
 let activePrioFilter = 'todas';
 let searchQuery = '';
 
-const DAY_LABELS = {};
+function dayLabel(dayKey) {
+  const iso = TRIP && TRIP.fechas && TRIP.fechas[dayKey];
+  if (!iso) return dayKey;
+  const d = new Date(iso + 'T00:00:00');
+  const label = d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+  return label.charAt(0).toUpperCase() + label.slice(1).replace('.', '');
+}
 
 // ---------- MIS VIAJES (landing) ----------
 async function loadTripsScreen() {
@@ -197,7 +203,7 @@ function buildDayTabs() {
   days.forEach((day) => {
     const btn = document.createElement('button');
     btn.className = 'day-tab' + (day === activeDay ? ' is-active' : '');
-    btn.textContent = DAY_LABELS[day] || day;
+    btn.textContent = dayLabel(day);
     btn.dataset.day = day;
     btn.addEventListener('click', () => selectDay(day));
     el.appendChild(btn);
