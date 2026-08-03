@@ -1,4 +1,42 @@
-# Esquema de datos — `data/lugares.json`
+# Esquema de datos
+
+## Estructura multi-viaje
+
+```
+data/
+  trips.json                    índice de viajes (nombre, destino, fechas, portada)
+  trips/
+    roma-2026/
+      lugares.json               lugares de ESE viaje (esquema de abajo)
+      trip.json                  metadatos de ESE viaje (vuelos, alojamiento...)
+    japon-2027/
+      lugares.json
+      trip.json
+```
+
+`data/trips.json`:
+```jsonc
+{
+  "viajes": [
+    {
+      "id": "roma-2026",                 // debe coincidir con el nombre de carpeta
+      "nombre": "Roma en Familia",
+      "destino": "Roma, Italia",
+      "fecha_inicio": "2026-10-09",       // YYYY-MM-DD
+      "fecha_fin": "2026-10-12",
+      "portada": "https://.../foto.jpg",  // opcional, imagen de fondo de la tarjeta
+      "carpeta": "data/trips/roma-2026"   // opcional si coincide con "data/trips/<id>"
+    }
+  ]
+}
+```
+
+Añadir un viaje nuevo = añadir una entrada aquí + crear su carpeta. No hace
+falta tocar `app.js` ni ningún módulo de `core/` — todos leen la ruta activa
+dinámicamente. `trip.json` puede además incluir `"mapa": {"center":[lat,lng],"zoom":13}`
+para que el mapa de ese viaje abra centrado en su destino en vez del mundo entero.
+
+## `lugares.json` (por viaje)
 
 Formato usado por `core/sheet.js`, `core/map.js` y `app.js`. Todos los campos
 son opcionales salvo `id`, `nombre`, `categoria` y `coordenadas` (necesarios

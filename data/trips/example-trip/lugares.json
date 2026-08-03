@@ -1,0 +1,12 @@
+{
+  "lugares": [
+    {
+      "id": "lugar-ejemplo",
+      "nombre": "Lugar de ejemplo",
+      "categoria": "monumento",
+      "prioridad": "imprescindible",
+      "descripcion_breve": "Sustituye esto por tus propios lugares siguiendo data/SCHEMA.md.",
+      "coordenadas": { "lat": 0.0, "lng": 0.0 }
+    }
+  ]
+}

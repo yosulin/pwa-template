@@ -1,0 +1,29 @@
+{
+  "_comment": "Metadatos del viaje: fechas por día, vuelos, alojamiento, contactos de emergencia. Ver data/SCHEMA.md.",
+  "fechas": {
+    "diaKey1": "YYYY-MM-DD",
+    "diaKey2": "YYYY-MM-DD"
+  },
+  "vuelos": [
+    {
+      "ruta": "Origen (XXX) - Destino (YYY)",
+      "fecha": "Día DD mes",
+      "salida": "HH:MM",
+      "llegada": "HH:MM",
+      "duracion": "HH:MM",
+      "aerolinea": "...",
+      "numero_vuelo": "..."
+    }
+  ],
+  "alojamiento": {
+    "nombre": "...",
+    "direccion": "...",
+    "checkin": "...",
+    "checkout": "...",
+    "telefono": "...",
+    "notas": "..."
+  },
+  "contactos_emergencia": [
+    { "nombre": "Emergencias UE", "telefono": "112" }
+  ]
+}

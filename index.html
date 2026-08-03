@@ -41,48 +41,55 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <p class="eyebrow">{{EYEBROW}}</p>
-    <h1>{{APP_TITLE}}</h1>
-    <p class="dates">{{SUBTITLE}}</p>
+    <button class="back-to-trips" id="backToTrips" hidden>← Mis Viajes</button>
+    <p class="eyebrow" id="headerEyebrow">{{EYEBROW}}</p>
+    <h1 id="headerTitle">{{APP_TITLE}}</h1>
+    <p class="dates" id="headerSubtitle">{{SUBTITLE}}</p>
   </div>
 </header>
 
-<nav class="view-switch" id="viewSwitch">
-  <button class="view-btn is-active" data-view="lugares">Todos</button>
-  <button class="view-btn" data-view="itinerario">Itinerario</button>
-  <button class="view-btn" data-view="mapa">Mapa</button>
-  <button class="view-btn" data-view="info">Info</button>
-</nav>
+<section id="view-trips" class="trips-view is-active">
+  <div class="trips-grid" id="tripsGrid"></div>
+</section>
 
-<div class="now-banner" id="nowBanner"></div>
+<div id="tripDetail" hidden>
+  <nav class="view-switch" id="viewSwitch">
+    <button class="view-btn is-active" data-view="lugares">Todos</button>
+    <button class="view-btn" data-view="itinerario">Itinerario</button>
+    <button class="view-btn" data-view="mapa">Mapa</button>
+    <button class="view-btn" data-view="info">Info</button>
+  </nav>
 
-<main id="app">
+  <div class="now-banner" id="nowBanner"></div>
 
-  <section id="view-lugares" class="view is-active">
-    <div class="search-row">
-      <input type="search" id="searchInput" placeholder="Buscar lugar..." autocomplete="off">
-      <button class="star-toggle" id="starToggle" title="Solo imprescindibles">★</button>
-      <span class="progress-badge" id="progressBadge"></span>
-    </div>
-    <div class="filter-row" id="lugaresFilters"></div>
-    <div class="places-grid" id="lugaresGrid"></div>
-  </section>
+  <main id="app">
 
-  <section id="view-itinerario" class="view">
-    <div class="day-tabs" id="dayTabs"></div>
-    <div class="milestone-track" id="itinerarioContent"></div>
-  </section>
+    <section id="view-lugares" class="view is-active">
+      <div class="search-row">
+        <input type="search" id="searchInput" placeholder="Buscar lugar..." autocomplete="off">
+        <button class="star-toggle" id="starToggle" title="Solo imprescindibles">★</button>
+        <span class="progress-badge" id="progressBadge"></span>
+      </div>
+      <div class="filter-row" id="lugaresFilters"></div>
+      <div class="places-grid" id="lugaresGrid"></div>
+    </section>
 
-  <section id="view-mapa" class="view">
-    <div class="filter-row" id="mapFilters"></div>
-    <div id="map"></div>
-  </section>
+    <section id="view-itinerario" class="view">
+      <div class="day-tabs" id="dayTabs"></div>
+      <div class="milestone-track" id="itinerarioContent"></div>
+    </section>
 
-  <section id="view-info" class="view">
-    <div class="info-content" id="infoContent"></div>
-  </section>
+    <section id="view-mapa" class="view">
+      <div class="filter-row" id="mapFilters"></div>
+      <div id="map"></div>
+    </section>
 
-</main>
+    <section id="view-info" class="view">
+      <div class="info-content" id="infoContent"></div>
+    </section>
+
+  </main>
+</div>
 
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
 <div class="sheet" id="sheet">
