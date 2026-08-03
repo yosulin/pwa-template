@@ -27,6 +27,7 @@ para que el lugar aparezca en el mapa y sea clicable).
       "mejor_momento_dia": "...",
       "consejo_practico": "...",
       "coordenadas": { "lat": 0.0, "lng": 0.0 },  // requerido para mapa
+      "imagen": "https://.../foto.jpg",           // opcional; si falta, la tarjeta usa color + icono de categoría
       "zona": "...",
       "cercania_metro": "...",
       "spots_fotografia": [
@@ -79,4 +80,19 @@ frecuencia y no son "lugares visitables". Ver `data/trip.example.json`.
 
 Si `data/trip.json` no existe, la vista "Info" y el modo "ahora" simplemente
 no se activan — el resto de la app funciona igual.
+
+## Fotos reales (`imagen`)
+
+Claude no tiene forma de extraer URLs de imagen reales de Unsplash, Pexels,
+Pixabay ni de Wikipedia (las herramientas disponibles no exponen esas URLs).
+Para añadir fotos reales:
+
+1. Busca manualmente en [unsplash.com](https://unsplash.com), [pexels.com](https://pexels.com)
+   o [pixabay.com](https://pixabay.com) (todas con licencias de uso libre).
+2. Clic derecho sobre la imagen → "Copiar dirección de imagen".
+3. Pega esa URL en el campo `imagen` del lugar correspondiente.
+
+El service worker cachea automáticamente cualquier URL puesta en `imagen`
+para que funcione offline tras la primera carga — no hace falta tocar nada
+más.
 
