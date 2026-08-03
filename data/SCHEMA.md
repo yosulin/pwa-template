@@ -81,18 +81,30 @@ frecuencia y no son "lugares visitables". Ver `data/trip.example.json`.
 Si `data/trip.json` no existe, la vista "Info" y el modo "ahora" simplemente
 no se activan — el resto de la app funciona igual.
 
-## Fotos reales (`imagen`)
+## Fotos reales (`imagen` / Unsplash automático)
 
-Claude no tiene forma de extraer URLs de imagen reales de Unsplash, Pexels,
-Pixabay ni de Wikipedia (las herramientas disponibles no exponen esas URLs).
-Para añadir fotos reales:
+Hay dos formas de tener fotos reales en las tarjetas:
 
-1. Busca manualmente en [unsplash.com](https://unsplash.com), [pexels.com](https://pexels.com)
-   o [pixabay.com](https://pixabay.com) (todas con licencias de uso libre).
-2. Clic derecho sobre la imagen → "Copiar dirección de imagen".
-3. Pega esa URL en el campo `imagen` del lugar correspondiente.
+**1. Manual** — pon una URL directa en el campo `imagen` de cualquier lugar
+(clic derecho sobre una foto en Unsplash/Pexels/Pixabay → "Copiar dirección
+de imagen"). Tiene prioridad sobre la opción automática.
 
-El service worker cachea automáticamente cualquier URL puesta en `imagen`
-para que funcione offline tras la primera carga — no hace falta tocar nada
-más.
+**2. Automática (recomendada)** — `core/unsplash.js` busca y resuelve una
+foto por lugar usando la API de Unsplash, solo para los lugares sin `imagen`
+manual:
+
+1. Crea una cuenta gratuita en [unsplash.com/developers](https://unsplash.com/developers)
+   y registra una app (tipo "Demo" vale — 50 peticiones/hora).
+2. Copia la **Access Key** (no la Secret Key).
+3. Pégala en `CONFIG.unsplashAccessKey` dentro de `app.js`, y opcionalmente
+   rellena `unsplashQuerySuffix` (p.ej. `"Rome"`) para acotar la búsqueda.
+
+La Access Key es de tipo cliente — está pensada para vivir en el propio
+navegador y quedará visible en el código fuente de tu repo público; no es un
+secreto de servidor, y el límite de peticiones (50/hora en el plan Demo)
+protege frente a abuso. Cada foto resuelta se cachea en `localStorage` 90
+días para no repetir peticiones en cada carga, y el service worker cachea la
+imagen en sí para que funcione offline. La licencia de Unsplash exige mostrar
+la atribución al fotógrafo — `core/unsplash.js` ya añade un crédito clicable
+en la esquina de la tarjeta, no lo quites.
 
