@@ -28,6 +28,7 @@ para que el lugar aparezca en el mapa y sea clicable).
       "consejo_practico": "...",
       "coordenadas": { "lat": 0.0, "lng": 0.0 },  // requerido para mapa
       "imagen": "https://.../foto.jpg",           // opcional; si falta, la tarjeta usa color + icono de categoría
+      "imagen_credito": { "autor": "...", "autor_url": "...", "foto_url": "..." }, // opcional, lo rellena el workflow de Unsplash
       "zona": "...",
       "cercania_metro": "...",
       "spots_fotografia": [
@@ -81,7 +82,7 @@ frecuencia y no son "lugares visitables". Ver `data/trip.example.json`.
 Si `data/trip.json` no existe, la vista "Info" y el modo "ahora" simplemente
 no se activan — el resto de la app funciona igual.
 
-## Fotos reales (`imagen` / Unsplash automático)
+## Fotos reales (`imagen` / Unsplash en build time)
 
 Hay dos formas de tener fotos reales en las tarjetas:
 
@@ -89,22 +90,31 @@ Hay dos formas de tener fotos reales en las tarjetas:
 (clic derecho sobre una foto en Unsplash/Pexels/Pixabay → "Copiar dirección
 de imagen"). Tiene prioridad sobre la opción automática.
 
-**2. Automática (recomendada)** — `core/unsplash.js` busca y resuelve una
-foto por lugar usando la API de Unsplash, solo para los lugares sin `imagen`
-manual:
+**2. Automática, resuelta en GitHub Actions (recomendada)** — las guías de
+Unsplash exigen que la Access Key se mantenga confidencial, y esta app es
+100% estática (sin servidor que pueda ocultarla). La solución correcta es
+resolver las fotos **antes** de publicar, no desde el navegador del
+visitante:
 
-1. Crea una cuenta gratuita en [unsplash.com/developers](https://unsplash.com/developers)
-   y registra una app (tipo "Demo" vale — 50 peticiones/hora).
+1. Crea una cuenta gratuita en **unsplash.com/oauth/applications** → "New
+   Application" (tipo "Demo" vale — 50 peticiones/hora).
 2. Copia la **Access Key** (no la Secret Key).
-3. Pégala en `CONFIG.unsplashAccessKey` dentro de `app.js`, y opcionalmente
-   rellena `unsplashQuerySuffix` (p.ej. `"Rome"`) para acotar la búsqueda.
+3. En tu repo de GitHub: Settings → Secrets and variables → Actions → "New
+   repository secret" → nombre `UNSPLASH_ACCESS_KEY`, valor la Access Key.
+4. Ve a la pestaña **Actions** del repo → "Resolver fotos (Unsplash)" → "Run
+   workflow". Opcionalmente indica un sufijo de búsqueda (p.ej. `Rome`) para
+   acotar los resultados al destino.
+5. El workflow (`scripts/resolve-unsplash-photos.mjs` +
+   `.github/workflows/resolve-photos.yml`) busca una foto por cada lugar sin
+   `imagen`, y hace commit de las URLs + crédito al fotógrafo directamente
+   en `data/lugares.json`. La Access Key nunca sale de GitHub Actions ni
+   llega al navegador del visitante.
 
-La Access Key es de tipo cliente — está pensada para vivir en el propio
-navegador y quedará visible en el código fuente de tu repo público; no es un
-secreto de servidor, y el límite de peticiones (50/hora en el plan Demo)
-protege frente a abuso. Cada foto resuelta se cachea en `localStorage` 90
-días para no repetir peticiones en cada carga, y el service worker cachea la
-imagen en sí para que funcione offline. La licencia de Unsplash exige mostrar
-la atribución al fotógrafo — `core/unsplash.js` ya añade un crédito clicable
-en la esquina de la tarjeta, no lo quites.
+Los lugares ya resueltos no se vuelven a tocar en futuras ejecuciones
+(el script solo busca foto para los que aún no tienen `imagen`), así que
+puedes volver a lanzarlo sin miedo tras añadir lugares nuevos al JSON.
+
+El service worker cachea cada `imagen` para que funcione offline, y la
+tarjeta muestra el crédito al fotógrafo (`imagen_credito`) como exige la
+licencia de Unsplash — no lo quites del `app.js` si mantienes esta fuente.
 

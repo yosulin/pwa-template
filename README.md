@@ -43,9 +43,11 @@ data/
 scripts/
   make-icons.sh          assets/icon.svg → PNGs (de pwa-starter, necesita rsvg-convert)
   make-og.sh              assets/og.svg → assets/og.png (de pwa-starter, necesita pngquant)
+  resolve-unsplash-photos.mjs  resuelve fotos por lugar via Unsplash, pensado para correr en GitHub Actions (ver data/SCHEMA.md)
   sw-lint.py               falla el commit si cambias assets pero no subes VERSION en sw.js
   og-lint.py                valida el tamaño de la tarjeta OG (de pwa-starter)
 
+.github/workflows/resolve-photos.yml   workflow manual que ejecuta el script anterior con la Access Key como secreto de GitHub
 .githooks/pre-commit     ejecuta sw-lint.py — activar con `git config core.hooksPath .githooks`
 config.example.json      valores a copiar en la CONFIG de app.js por proyecto
 ```
