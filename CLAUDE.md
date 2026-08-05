@@ -3,7 +3,20 @@
 Instrucciones para cuando Josu diga algo como *"nuevo proyecto basado en mi
 pwa-template"* o *"monta la PWA de [tema] usando mi template"*.
 
-## Nuevo proyecto
+## Primero: ¿vanilla (raíz) o React (`react/`)?
+
+- Mapa/itinerario de lugares (rutas, guías, viajes) → raíz, vanilla-JS.
+- Quiz, juego, o algo con bastante estado/interacción → `react/`.
+- Si dudas, pregunta — no asumas React solo porque "parece más moderno";
+  la raíz existe porque un `app.js` sin build es más simple y suficiente
+  para la mayoría de estos proyectos.
+
+Lo que sigue en este documento es para la raíz (vanilla). Para `react/`,
+usa `react/README.md` como referencia de convenciones — sigue la misma
+norma de "confirma con Josu antes de push, nunca reutilices un token ya
+expuesto en texto plano sin recordarle que lo revoque".
+
+## Nuevo proyecto (vanilla, raíz)
 
 1. Pregunta lo mínimo imprescindible si no está claro por contexto: nombre de
    la app, tema/fechas (si aplica), y si tiene itinerario día a día o es solo

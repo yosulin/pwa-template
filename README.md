@@ -4,6 +4,12 @@ Base para las PWAs estáticas de lugares/itinerarios que suelo montar
 (rutas de senderismo, guías de pintxos, viajes familiares...): sin backend,
 datos en JSON, mapa Leaflet, alojadas en GitHub Pages.
 
+> **¿Es un mapa/itinerario?** Sigue leyendo, esto es para ti.
+> **¿Es un quiz/juego/algo con más estado e interacción?** Usa
+> [`react/`](react/) en su lugar (React + Vite) — nace de construir
+> `elige-tu-pan-quiz` y documenta ahí varias lecciones/bugs reales que no
+> merece la pena repetir en el próximo proyecto.
+
 ## Atribución
 
 La carcasa de la PWA (`sw.js` con versión + lint de cache-busting, dark mode,

@@ -1,0 +1,246 @@
+:root {
+  /* Rellena estos con la paleta real del proyecto — no dejes los
+     placeholders en un despliegue de verdad */
+  --bg: {{THEME_COLOR_BG}};
+  --bg-deep: {{THEME_COLOR_BG_DEEP}};
+  --accent: {{THEME_COLOR}};
+  --accent-dark: {{THEME_COLOR_DARK}};
+  --text: {{TEXT_COLOR}};
+  --text-soft: {{TEXT_COLOR_SOFT}};
+  --paper: {{PAPER_COLOR}};
+  --white: #ffffff;
+
+  --font-display: ui-serif, Georgia, serif;
+  --font-body: ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 22px;
+  --radius-pill: 999px;
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  /* Ajusta también estos — no es solo invertir, revisa contraste real */
+  --bg: {{THEME_COLOR_BG_DARK}};
+  --bg-deep: {{THEME_COLOR_BG_DEEP_DARK}};
+  --accent: {{THEME_COLOR_DARK_MODE}};
+  --text: {{TEXT_COLOR_DARK}};
+  --paper: {{PAPER_COLOR_DARK}};
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh; /* se ajusta al alto real visible, con o sin barra de direcciones */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ============ BOTONES DE ESQUINA (tema + info) ============ */
+
+.corner-btn {
+  position: fixed;
+  bottom: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--bg-deep);
+  background: var(--paper);
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9;
+  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.3);
+}
+
+.corner-btn.bottom-left {
+  left: 16px;
+}
+.corner-btn.bottom-right {
+  right: 16px;
+}
+.corner-btn:hover {
+  background: var(--bg-deep);
+  color: var(--text);
+}
+
+/* ============ SELECTOR DE IDIOMA (versión simple, tap) ============ */
+
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+  background: var(--paper);
+  border: 1px solid var(--bg-deep);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+}
+
+.lang-switcher button {
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 11px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.lang-switcher button.is-active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* ============ AVISO DE INSTALACIÓN Y ACTUALIZACIÓN ============ */
+
+.install-banner,
+.update-toast {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  z-index: 25;
+  max-width: 440px;
+  margin: 0 auto;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 14px;
+  padding: 10px 10px 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.5);
+}
+
+.install-banner {
+  bottom: 16px;
+  padding: 14px;
+}
+.update-toast {
+  top: 16px;
+}
+
+.install-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.install-copy {
+  flex: 1;
+  min-width: 0;
+}
+.install-copy p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+.install-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* ============ PANEL DE INFO (modal básico) ============ */
+
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 30;
+}
+.info-sheet {
+  background: var(--paper);
+  border-radius: 22px 22px 0 0;
+  padding: 28px 24px 30px;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.info-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+.info-rows {
+  width: 100%;
+  max-width: 260px;
+  margin: 4px 0;
+}
+.info-rows > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--bg-deep);
+  font-size: 0.9rem;
+}
+.info-rows dt {
+  color: var(--text-soft);
+}
+.info-rows dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+/* ============ BOTONES GENÉRICOS ============ */
+
+.btn {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background: var(--accent-dark);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--bg-deep);
+}
+.btn-next {
+  background: var(--accent);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Nunca añadas maximum-scale=1 / user-scalable=no: bloquea el zoom y
+         es un fallo de accesibilidad (WCAG 1.4.4) -->
+    <meta name="theme-color" content="{{THEME_COLOR}}" />
+    <meta name="description" content="{{APP_DESCRIPTION}}" />
+
+    <!-- Tarjeta OG/Twitter: genera public/og.png (1200x630) antes de publicar,
+         o el enlace saldrá pelón al compartirlo -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{APP_NAME}}" />
+    <meta property="og:description" content="{{APP_DESCRIPTION}}" />
+    <meta property="og:image" content="{{APP_URL}}og.png" />
+    <meta property="og:url" content="{{APP_URL}}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="{{APP_URL}}og.png" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <title>{{APP_NAME}}</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

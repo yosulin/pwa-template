@@ -1,0 +1,16 @@
+{
+  "appTitle": "{{APP_NAME}}",
+  "install.title": "Instala la app",
+  "install.description": "Añádela a tu pantalla de inicio para acceder más rápido, incluso sin conexión.",
+  "install.cta": "Instalar",
+  "install.iosDescription": "Pulsa Compartir y luego \"Añadir a pantalla de inicio\".",
+  "install.dismiss": "Cerrar aviso de instalación",
+  "update.available": "Hay una versión nueva",
+  "update.reload": "Actualizar",
+  "update.dismiss": "Cerrar aviso de actualización",
+  "info.title": "Sobre esta app",
+  "info.version": "Versión",
+  "info.build": "Compilación",
+  "info.updated": "Última actualización",
+  "info.close": "Cerrar"
+}
