@@ -62,6 +62,9 @@ Compara el proyecto existente contra esta lista y reporta qué falta:
 - [ ] `sw.js` con `VERSION` + `.githooks/pre-commit` activado
 - [ ] Dark mode vía `prefers-color-scheme` (variables CSS, no clase manual)
 - [ ] Tarjeta OG (`assets/og.png` + metas `og:*`)
+- [ ] Icono maskable con SU PROPIA zona segura (`icon-maskable.svg`
+      distinto de `icon.svg`, no el mismo fichero marcado con dos
+      `purpose`) — si no, Android lo recorta raro al instalar
 - [ ] Banner de instalación (Android/desktop + instrucciones iOS)
 - [ ] Pull-to-refresh en modo standalone
 - [ ] Aviso de "nueva versión disponible"

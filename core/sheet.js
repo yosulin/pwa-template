@@ -8,6 +8,7 @@ import { mapsUrl, directionsUrl, searchTextUrl } from './maps.js';
 import { toggleAudioguide } from './audioguide.js';
 import { isVisited, toggleVisited } from './visited.js';
 import { vibrate, HAPTIC } from './haptics.js';
+import { escapeHtml } from './escapeHtml.js';
 
 const PRIO_LABELS = {
   imprescindible: 'Imprescindible',
@@ -37,16 +38,16 @@ export function openSheet(lugar, { categoryColorMap, catLabels = {}, onAfterOpen
   const photos = (lugar.spots_fotografia || []).map((p) => {
     const url = p.coordenadas ? mapsUrl(p) : searchTextUrl(`${p.nombre} ${lugar.zona || lugar.nombre}`);
     return `
-    <a class="photo-item" href="${url}" target="_blank" rel="noopener">
-      <strong>${p.nombre} <span class="pin-hint">📍</span></strong>
-      <span>${p.mejor_hora || ''} · ${p.duracion_recomendada || ''}</span>
-      <span>${p.por_que || ''}</span>
+    <a class="photo-item" href="${escapeHtml(url)}" target="_blank" rel="noopener">
+      <strong>${escapeHtml(p.nombre)} <span class="pin-hint">📍</span></strong>
+      <span>${escapeHtml(p.mejor_hora || '')} · ${escapeHtml(p.duracion_recomendada || '')}</span>
+      <span>${escapeHtml(p.por_que || '')}</span>
     </a>
   `;
   }).join('');
 
   const priorityTag = lugar.prioridad
-    ? `<span class="priority-tag priority-${lugar.prioridad}">${lugar.prioridad === 'imprescindible' ? '★ ' : ''}${PRIO_LABELS[lugar.prioridad] || lugar.prioridad}</span>`
+    ? `<span class="priority-tag priority-${lugar.prioridad}">${lugar.prioridad === 'imprescindible' ? '★ ' : ''}${escapeHtml(PRIO_LABELS[lugar.prioridad] || lugar.prioridad)}</span>`
     : '';
 
   const audioBtn = lugar.audioguia || lugar.descripcion_breve
@@ -70,33 +71,33 @@ export function openSheet(lugar, { categoryColorMap, catLabels = {}, onAfterOpen
   content.innerHTML = `
     <button class="sheet-close" id="sheetCloseBtn" aria-label="Cerrar">✕</button>
     ${lugar.imagen ? `
-      <div class="sheet-photo" style="background-image:url('${lugar.imagen}')">
-        ${lugar.imagen_credito ? `<a class="sheet-photo-credit" href="${lugar.imagen_credito.foto_url}" target="_blank" rel="noopener">📷 ${lugar.imagen_credito.autor}</a>` : ''}
+      <div class="sheet-photo" style="background-image:url('${escapeHtml(lugar.imagen)}')">
+        ${lugar.imagen_credito ? `<a class="sheet-photo-credit" href="${escapeHtml(lugar.imagen_credito.foto_url)}" target="_blank" rel="noopener">📷 ${escapeHtml(lugar.imagen_credito.autor)}</a>` : ''}
       </div>
     ` : ''}
     <div class="cat-label" style="--cat-color:${catColor}">
       <span class="cat-dot" style="width:8px;height:8px;border-radius:50%;background:${catColor};display:inline-block"></span>
-      ${catLabels[lugar.categoria] || lugar.categoria}
+      ${escapeHtml(catLabels[lugar.categoria] || lugar.categoria)}
     </div>
-    <h2>${lugar.nombre}</h2>
+    <h2>${escapeHtml(lugar.nombre)}</h2>
     ${priorityTag}
-    <p>${lugar.descripcion_breve || ''}</p>
+    <p>${escapeHtml(lugar.descripcion_breve || '')}</p>
 
     <dl class="fact-grid" id="sheetFacts">
-      <div><dt>Horario</dt><dd>${lugar.horario || '—'}</dd></div>
-      <div><dt>Precio adulto</dt><dd>${lugar.precio_adulto || '—'}</dd></div>
-      <div><dt>Precio niño</dt><dd>${lugar.precio_niño || '—'}</dd></div>
-      <div><dt>Reserva</dt><dd>${lugar.necesita_reserva === true ? 'Sí' : (lugar.necesita_reserva === false ? 'No' : (lugar.necesita_reserva || '—'))}</dd></div>
-      <div><dt>Duración</dt><dd>${lugar.tiempo_visita_recomendado || '—'}</dd></div>
-      <div><dt>Mejor hora</dt><dd>${lugar.hora_visita_recomendada || lugar.mejor_momento_dia || '—'}</dd></div>
+      <div><dt>Horario</dt><dd>${escapeHtml(lugar.horario || '—')}</dd></div>
+      <div><dt>Precio adulto</dt><dd>${escapeHtml(lugar.precio_adulto || '—')}</dd></div>
+      <div><dt>Precio niño</dt><dd>${escapeHtml(lugar.precio_niño || '—')}</dd></div>
+      <div><dt>Reserva</dt><dd>${lugar.necesita_reserva === true ? 'Sí' : (lugar.necesita_reserva === false ? 'No' : escapeHtml(lugar.necesita_reserva || '—'))}</dd></div>
+      <div><dt>Duración</dt><dd>${escapeHtml(lugar.tiempo_visita_recomendado || '—')}</dd></div>
+      <div><dt>Mejor hora</dt><dd>${escapeHtml(lugar.hora_visita_recomendada || lugar.mejor_momento_dia || '—')}</dd></div>
     </dl>
 
     ${audioBtn}
     ${visitedBtn}
     ${mapsRow}
 
-    ${lugar.dato_curioso_niños ? `<div class="sheet-section"><h4>Dato curioso</h4><p>${lugar.dato_curioso_niños}</p></div>` : ''}
-    ${lugar.consejo_practico ? `<div class="sheet-section"><h4>Consejo práctico</h4><p>${lugar.consejo_practico}</p></div>` : ''}
+    ${lugar.dato_curioso_niños ? `<div class="sheet-section"><h4>Dato curioso</h4><p>${escapeHtml(lugar.dato_curioso_niños)}</p></div>` : ''}
+    ${lugar.consejo_practico ? `<div class="sheet-section"><h4>Consejo práctico</h4><p>${escapeHtml(lugar.consejo_practico)}</p></div>` : ''}
     ${photos ? `<div class="sheet-section" id="sheetPhotos"><h4>Spots fotográficos</h4>${photos}</div>` : ''}
     ${eats ? `<div class="sheet-section" id="sheetEats"><h4>Dónde comer cerca</h4>${eats}</div>` : ''}
   `;

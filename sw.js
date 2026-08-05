@@ -4,10 +4,11 @@
 //
 // REGLA: cada vez que cambies cualquier archivo listado en ASSETS,
 // sube VERSION. scripts/sw-lint.py falla el commit si te olvidas.
-const VERSION = '2026.08.03-17';
+const VERSION = '2026.08.05-18';
 const CACHE_NAME = `app-cache-${VERSION}`;
-const TILE_CACHE = `map-tiles-${VERSION}`;
 const IMAGE_CACHE = `place-images-${VERSION}`;
+// Sigue haciendo falta para excluir tiles de la caché genérica de imágenes
+// de más abajo — ver el comentario en el handler de 'fetch'.
 const TILE_HOST_PATTERN = /tile\.openstreetmap\.org/;
 
 // Lista de archivos a precachear. Los datos de cada viaje (data/trips/<id>/*)
@@ -45,7 +46,12 @@ self.addEventListener('install', (event) => {
         // si algún asset opcional no existe (p.ej. data/trip.json aún no creado), no bloquear la instalación
         return Promise.all(ASSETS.map((a) => cache.add(a).catch(() => {})));
       }))
-      .then(() => self.skipWaiting())
+    // OJO: NO llamar a self.skipWaiting() aquí. Si lo haces, el worker nuevo
+    // se activa solo y (combinado con clients.claim() en 'activate') las
+    // pestañas abiertas se recargan sin avisar — el aviso de "hay versión
+    // nueva" de update.js se queda de adorno, nunca se ve. skipWaiting()
+    // solo debe llegar en respuesta al mensaje SKIP_WAITING (ver abajo),
+    // que es lo que dispara el botón del aviso.
   );
 });
 
@@ -53,9 +59,11 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys.filter((k) => k !== CACHE_NAME && k !== TILE_CACHE && k !== IMAGE_CACHE).map((k) => caches.delete(k))
+        keys.filter((k) => k !== CACHE_NAME && k !== IMAGE_CACHE).map((k) => caches.delete(k))
       ))
-      .then(() => self.clients.claim())
+    // Tampoco clients.claim() aquí por la misma razón: solo se debe tomar
+    // control de las pestañas abiertas cuando el usuario lo pide, no en
+    // cuanto el worker nuevo termina de instalarse.
   );
 });
 
@@ -63,22 +71,17 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = event.request.url;
 
-  // Teselas del mapa: cache-first, se guardan según se van pidiendo
-  // (así "offline" cubre las zonas por las que ya has navegado el mapa).
-  if (TILE_HOST_PATTERN.test(url)) {
-    event.respondWith(
-      caches.open(TILE_CACHE).then((cache) =>
-        cache.match(event.request).then((cached) => {
-          if (cached) return cached;
-          return fetch(event.request).then((response) => {
-            cache.put(event.request, response.clone());
-            return response;
-          }).catch(() => cached);
-        })
-      )
-    );
-    return;
-  }
+  // Las teselas de tile.openstreetmap.org NO se cachean aquí a propósito.
+  // Su política de uso prohíbe explícitamente el "offline use" y cualquier
+  // patrón de "guardar para más tarde" (operations.osmfoundation.org/policies/tiles/),
+  // con el aviso de que pueden bloquear el acceso sin avisar. Un caché
+  // persistente en Cache Storage —aunque se rellene tesela a tesela según
+  // se navega, no en bloque— es justo ese patrón. Dejamos el fetch pasar
+  // directo a red: el caché HTTP normal del navegador ya respeta las
+  // cabeceras Cache-Control del propio servidor de OSM, sin que el
+  // service worker tenga que hacer nada. Si en algún proyecto hace
+  // falta mapa de verdad offline, hay que alojar las teselas propias o
+  // usar un proveedor que lo permita explícitamente — no interceptar aquí.
 
   // Fotos reales de lugares (data/lugares.json -> campo "imagen"): cache-first
   // igual que las teselas, para que también funcionen offline.
@@ -117,6 +120,6 @@ self.addEventListener('message', (event) => {
     event.source.postMessage({ type: 'VERSION', version: VERSION });
   }
   if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
+    self.skipWaiting().then(() => self.clients.claim());
   }
 });

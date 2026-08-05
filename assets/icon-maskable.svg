@@ -1,0 +1,11 @@
+<!-- Variante "maskable": fondo A SANGRE COMPLETA (sin rx — Android pone su
+     propia máscara: círculo, squircle...) y el contenido dentro del ~80%
+     central (zona segura). Sin esto, Android recorta el icono normal con
+     su propia forma y el resultado se ve cortado/raro — es justo lo que
+     pasaba antes de este fix. Mismo estilo que icon.svg, solo cambia el
+     encuadre. Sustituye ambos SVG a la vez si cambias el diseño. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#2196f3"/>
+  <text x="256" y="266" text-anchor="middle" dominant-baseline="central"
+        font-family="system-ui, sans-serif" font-size="170" font-weight="700" fill="#fff">A</text>
+</svg>

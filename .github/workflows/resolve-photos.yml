@@ -28,15 +28,24 @@ jobs:
       - name: Resolver fotos
         env:
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          # Pasar los inputs como variables de entorno, NO interpolarlos
+          # directamente en el bloque de shell de más abajo — si se
+          # interpolan con ${{ }}, el texto se sustituye ANTES de que el
+          # shell vea el script, así que cualquier cosa que alguien meta en
+          # el input (p.ej. "$(comando)" o "; comando") se ejecutaría como
+          # si la hubieras escrito tú. Referenciarlas como "$VAR" evita esto
+          # porque el shell las trata como valor, no como sintaxis.
+          DATA_FILE: ${{ github.event.inputs.data_file }}
+          QUERY_SUFFIX: ${{ github.event.inputs.query_suffix }}
         run: |
-          node scripts/resolve-unsplash-photos.mjs \
-            "${{ github.event.inputs.data_file }}" \
-            "${{ github.event.inputs.query_suffix }}"
+          node scripts/resolve-unsplash-photos.mjs "$DATA_FILE" "$QUERY_SUFFIX"
 
       - name: Commit si hay cambios
+        env:
+          DATA_FILE: ${{ github.event.inputs.data_file }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "${{ github.event.inputs.data_file }}"
+          git add "$DATA_FILE"
           git diff --cached --quiet || git commit -m "Fotos resueltas via Unsplash (automatico)"
           git push

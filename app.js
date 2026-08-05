@@ -19,6 +19,7 @@ import { toggleAudioguide } from './core/audioguide.js';
 import { directionsUrl } from './core/maps.js';
 import { loadTripsIndex, renderTripsList, tripStatus } from './core/trips.js';
 import { vibrate, HAPTIC } from './core/haptics.js';
+import { escapeHtml } from './core/escapeHtml.js';
 
 // ---------- CONFIG DEL PROYECTO (compartida entre todos los viajes) ----------
 const CONFIG = {
@@ -192,10 +193,10 @@ function updateNowBanner() {
   banner.classList.remove('state-ahora', 'state-siguiente');
   if (result.estado === 'ahora') {
     banner.classList.add('is-visible', 'state-ahora');
-    banner.innerHTML = `<span class="now-tag">Ahora</span><strong>${result.linea}</strong>`;
+    banner.innerHTML = `<span class="now-tag">Ahora</span><strong>${escapeHtml(result.linea)}</strong>`;
   } else if (result.estado === 'siguiente') {
     banner.classList.add('is-visible', 'state-siguiente');
-    banner.innerHTML = `<span class="now-tag">Siguiente</span><strong>${result.linea}</strong>`;
+    banner.innerHTML = `<span class="now-tag">Siguiente</span><strong>${escapeHtml(result.linea)}</strong>`;
   } else {
     banner.classList.remove('is-visible');
   }
@@ -261,7 +262,7 @@ function renderItinerario() {
       const card = document.createElement('div');
       card.className = 'milestone-card' + (isVisited(lugar.id, CURRENT_TRIP?.id) ? ' is-visited' : '');
       card.style.setProperty('--cat-color', catVar(categoryColorMap, lugar.categoria));
-      card.innerHTML = `<h3>${starIf(lugar)}${lugar.nombre}</h3><p>${rest}</p>`;
+      card.innerHTML = `<h3>${starIf(lugar)}${escapeHtml(lugar.nombre)}</h3><p>${escapeHtml(rest)}</p>`;
       card.addEventListener('click', () => { vibrate(HAPTIC.tap); openLugarSheet(lugar); });
       li.appendChild(card);
     } else {
@@ -372,17 +373,17 @@ function renderLugares() {
 
     card.innerHTML = `
       <div class="place-card-row" data-action="info">
-        <div class="place-thumb" ${l.imagen ? `style="background-image:url('${l.imagen}')"` : ''}>
+        <div class="place-thumb" ${l.imagen ? `style="background-image:url('${escapeHtml(l.imagen)}')"` : ''}>
           ${l.imagen ? '' : `<span class="place-thumb-icon">${categoryIcon(l.categoria)}</span>`}
           ${visited ? '<span class="place-thumb-check">✓</span>' : ''}
         </div>
         <div class="place-card-main">
           <div class="place-card-toprow">
-            <h3>${l.nombre}</h3>
+            <h3>${escapeHtml(l.nombre)}</h3>
             ${l.prioridad === 'imprescindible' ? '<span class="star-badge">★</span>' : ''}
           </div>
-          <p class="place-card-meta">${meta}</p>
-          <p class="place-card-desc">${l.descripcion_breve || ''}</p>
+          <p class="place-card-meta">${escapeHtml(meta)}</p>
+          <p class="place-card-desc">${escapeHtml(l.descripcion_breve || '')}</p>
         </div>
       </div>
       <div class="place-card-pillrow">

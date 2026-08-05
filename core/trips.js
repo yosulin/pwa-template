@@ -5,6 +5,7 @@
 // no cambian, solo apuntan a rutas distintas según el viaje activo.
 
 import { vibrate, HAPTIC } from './haptics.js';
+import { escapeHtml } from './escapeHtml.js';
 
 export async function loadTripsIndex(path = 'data/trips.json') {
   const res = await fetch(path);
@@ -57,8 +58,8 @@ export function renderTripsList(containerId, trips, { onSelect, onCreateHint } =
       <span class="trip-card-scrim"></span>
       <span class="trip-card-status">${status.texto}</span>
       <div class="trip-card-body">
-        <h2>${trip.nombre}</h2>
-        <p>${trip.destino || ''}</p>
+        <h2>${escapeHtml(trip.nombre)}</h2>
+        <p>${escapeHtml(trip.destino || '')}</p>
         ${trip.fecha_inicio ? `<p class="trip-card-dates">${formatRange(trip.fecha_inicio, trip.fecha_fin)}</p>` : ''}
       </div>
     `;
