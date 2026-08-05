@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useI18n } from '../i18n'
 import { assetUrl } from '../utils/assetUrl'
-import { vibrate } from '../utils/feedback'
+import { vibrate, HAPTIC } from '../utils/feedback'
 
 // El hash de commit (no solo la versión ni la fecha) es lo que de verdad
 // permite comprobar sin ambigüedad si un cambio concreto está desplegado —
@@ -17,7 +17,7 @@ export default function InfoPanel() {
         type="button"
         className="corner-btn bottom-right"
         onClick={() => {
-          vibrate(12)
+          vibrate(HAPTIC.select)
           setOpen(true)
         }}
         aria-label={t('info.title')}

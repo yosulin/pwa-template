@@ -9,6 +9,10 @@ datos en JSON, mapa Leaflet, alojadas en GitHub Pages.
 > [`react/`](react/) en su lugar (React + Vite) — nace de construir
 > `elige-tu-pan-quiz` y documenta ahí varias lecciones/bugs reales que no
 > merece la pena repetir en el próximo proyecto.
+> **¿Solo necesitas una pieza suelta** (botones con vibración, mapa,
+> instalación...) **para meterla en algo que no parte de este template?**
+> Mira [`modules/`](modules/) — piezas independientes, se usa la que haga
+> falta, sin tener que adoptar el esqueleto entero.
 
 ## Atribución
 

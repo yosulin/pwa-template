@@ -16,6 +16,20 @@ usa `react/README.md` como referencia de convenciones — sigue la misma
 norma de "confirma con Josu antes de push, nunca reutilices un token ya
 expuesto en texto plano sin recordarle que lo revoque".
 
+## Piezas sueltas (`modules/`)
+
+Si Josu pide algo como *"usa el módulo de botones de mi pwa-template"* o
+menciona una pieza suelta sin querer el esqueleto completo: mira
+`modules/<nombre>/README.md`, copia la implementación (`react/` o
+`vanilla/` según el proyecto de destino) al sitio correspondiente.
+
+**Regla de propagación**: si mejoras una pieza que YA está integrada en un
+esqueleto (p.ej. tocas `core/haptics.js` de la raíz, o
+`react/src/utils/feedback.js`) trabajando en un proyecto real, el cambio
+vuelve a `modules/<nombre>/` — no se queda solo en ese proyecto ni solo en
+el esqueleto. Sin esto, `modules/` y los esqueletos se desincronizan en
+cuanto alguien toca uno de los dos sin el otro.
+
 ## Nuevo proyecto (vanilla, raíz)
 
 1. Pregunta lo mínimo imprescindible si no está claro por contexto: nombre de

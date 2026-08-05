@@ -1,10 +1,10 @@
-import { vibrate } from '../utils/feedback'
+import { vibrate, HAPTIC } from '../utils/feedback'
 
 export default function ThemeToggle({ theme, onToggle }) {
   const isDark = theme === 'dark'
 
   function handleClick() {
-    vibrate(12)
+    vibrate(HAPTIC.select)
     onToggle()
   }
 

@@ -1,0 +1,55 @@
+/* modules/buttons — clases visuales. Usa las variables de color que ya
+   tenga el proyecto (--accent, --accent-dark, --text, --bg-deep, --paper);
+   este fichero no define paleta propia. */
+
+.btn {
+  border: none;
+  border-radius: var(--radius-pill, 999px);
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--white, #fff);
+}
+.btn-primary:hover {
+  background: var(--accent-dark, var(--accent));
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--bg-deep);
+}
+
+.corner-btn {
+  position: fixed;
+  bottom: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--bg-deep);
+  background: var(--paper);
+  color: var(--text-soft, var(--text));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9;
+  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.3);
+}
+.corner-btn.bottom-left {
+  left: 16px;
+}
+.corner-btn.bottom-right {
+  right: 16px;
+}
+.corner-btn:hover {
+  background: var(--bg-deep);
+  color: var(--text);
+}
+.corner-btn:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
