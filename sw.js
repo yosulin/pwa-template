@@ -4,9 +4,17 @@
 //
 // REGLA: cada vez que cambies cualquier archivo listado en ASSETS,
 // sube VERSION. scripts/sw-lint.py falla el commit si te olvidas.
-const VERSION = '2026.08.05-18';
-const CACHE_NAME = `app-cache-${VERSION}`;
-const IMAGE_CACHE = `place-images-${VERSION}`;
+const VERSION = '2026.08.06-19';
+// Prefijo único por despliegue, derivado de dónde vive este service worker.
+// Sin esto, dos proyectos DISTINTOS basados en esta misma plantilla usarían
+// los mismos nombres genéricos "app-cache-"/"place-images-" — y como
+// Cache Storage se comparte por origen (todo yosulin.github.io/*), el
+// borrado de cachés antiguas de un proyecto podría llevarse por delante
+// las del otro. Esto resuelve el problema en la plantilla misma, no solo
+// en un proyecto concreto — cada copia lo hereda automáticamente.
+const SCOPE_ID = self.registration.scope.replace(/[^a-z0-9]/gi, '-');
+const CACHE_NAME = `${SCOPE_ID}app-cache-${VERSION}`;
+const IMAGE_CACHE = `${SCOPE_ID}place-images-${VERSION}`;
 // Sigue haciendo falta para excluir tiles de la caché genérica de imágenes
 // de más abajo — ver el comentario en el handler de 'fetch'.
 const TILE_HOST_PATTERN = /tile\.openstreetmap\.org/;
@@ -59,7 +67,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys.filter((k) => k !== CACHE_NAME && k !== IMAGE_CACHE).map((k) => caches.delete(k))
+        keys.filter((k) => k.startsWith(SCOPE_ID) && k !== CACHE_NAME && k !== IMAGE_CACHE).map((k) => caches.delete(k))
       ))
     // Tampoco clients.claim() aquí por la misma razón: solo se debe tomar
     // control de las pestañas abiertas cuando el usuario lo pide, no en
